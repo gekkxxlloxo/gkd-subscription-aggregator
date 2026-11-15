@@ -1,0 +1,71 @@
+{
+  "sources": [
+    {
+      "name": "AIsouler",
+      "url": "https://raw.githubusercontent.com/AIsouler/GKD_subscription/main/dist/AIsouler_gkd.json5",
+      "description": "国产应用深度优化，覆盖 1200+ 应用",
+      "priority": "high",
+      "enabled": true
+    },
+    {
+      "name": "GKD_THS",
+      "url": "https://gitcode.com/gh_mirrors/gk/GKD_THS_List/raw/main/dist/collection.json5",
+      "description": "多维护者联合更新，覆盖 2000+ 应用",
+      "priority": "high",
+      "enabled": true
+    },
+    {
+      "name": "MengNianXiaoYao",
+      "url": "https://cdn.jsdelivr.net/gh/MengNianxiaoyao/gkd-rules/dist/custom.json5",
+      "description": "游戏党专属，覆盖 1500+ 应用",
+      "priority": "medium",
+      "enabled": true
+    },
+    {
+      "name": "AoGuai",
+      "url": "https://npmmirror.com/mirrors/ao-guai/gkd-rules/dist/lite.json5",
+      "description": "轻量省电，覆盖 500+ 应用",
+      "priority": "low",
+      "enabled": true
+    },
+    {
+      "name": "GanLin",
+      "url": "https://gitmirror.com/ganlin/gkd-rules/raw/main/dist/video.json5",
+      "description": "视频平台深度优化，覆盖 300+ 应用",
+      "priority": "medium",
+      "enabled": true
+    },
+    {
+      "name": "Adpro-Team",
+      "url": "https://gitcode.com/gh_mirrors/gkd/GKD_subscription/raw/master/dist/standard.json5",
+      "description": "国际应用专项优化，覆盖 800+ 应用",
+      "priority": "medium",
+      "enabled": true
+    },
+    {
+      "name": "GanLin-All",
+      "url": "https://gitcode.com/gh_mirrors/ganlinte/GKD-subscription/raw/main/dist/all.json5",
+      "description": "甘林全量订阅，覆盖所有应用",
+      "priority": "low",
+      "enabled": false
+    }
+  ],
+  "settings": {
+    "deduplication": {
+      "enabled": true,
+      "method": "by_app_id",
+      "keep_highest_priority": true
+    },
+    "conflict_resolution": {
+      "strategy": "priority_based",
+      "fallback": "first_seen"
+    },
+    "output": {
+      "format": "json5",
+      "include_metadata": true,
+      "add_import_url": false
+    }
+  },
+  "last_updated": null,
+  "version": "1.0.0"
+}
