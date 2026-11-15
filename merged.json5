@@ -1,0 +1,14 @@
+{
+  "name": "GKD 聚合订阅",
+  "description": "多源聚合的 GKD 订阅规则，自动去重和更新",
+  "version": "1.0.0",
+  "updateUrl": "https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/merged.json5",
+  "importUrl": null,
+  "groups": [],
+  "metadata": {
+    "generatedAt": null,
+    "totalRules": 0,
+    "sourceCount": 0,
+    "note": "此文件由 GitHub Actions 自动更新，请勿手动编辑"
+  }
+}
