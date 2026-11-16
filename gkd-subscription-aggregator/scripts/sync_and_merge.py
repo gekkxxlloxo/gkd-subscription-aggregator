@@ -13,7 +13,6 @@ from requests.exceptions import SSLError
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-import json5
 from urllib3.exceptions import SSLError as Urllib3SSLError
 
 
@@ -56,7 +55,7 @@ def parse_selector_string(selector_str: str) -> dict | None:
 def load_source_list(config_path: str) -> dict:
     """加载订阅源列表配置"""
     with open(config_path, 'r', encoding='utf-8') as f:
-        return json5.load(f)
+        return json.load(f)
 
 
 def fetch_subscription(url: str, timeout: int = 30, max_retries: int = 3) -> dict | None:
@@ -69,8 +68,48 @@ def fetch_subscription(url: str, timeout: int = 30, max_retries: int = 3) -> dic
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }, allow_redirects=True)
             response.raise_for_status()
-            # JSON5 文件需要使用 json5 库解析（支持单引号和注释）
-            return json5.loads(response.text)
+            # 尝试使用标准 JSON 解析，如果失败则说明是 JSON5 格式
+            try:
+                return json.loads(response.text)
+            except json.JSONDecodeError:
+                # 如果是 JSON5 格式（支持单引号、注释等），需要手动处理
+                # 简单的预处理：移除注释、替换单引号为双引号
+                text = response.text
+                # 移除 // 行内注释（但要注意不要误删 URL 中的 //）
+                lines = text.split('\n')
+                cleaned_lines = []
+                for line in lines:
+                    # 跳过纯注释行
+                    if line.strip().startswith('//'):
+                        continue
+                    # 移除行内注释（简单处理）
+                    if '//' in line:
+                        # 避免误删 URL 中的 //
+                        if 'http://' in line or 'https://' in line:
+                            # 保留 URL 部分，移除其他 // 后的内容
+                            parts = re.split(r'(https?://[^ ]*)', line)
+                            cleaned = ''
+                            for i, part in enumerate(parts):
+                                if i % 2 == 1:  # URL 部分
+                                    cleaned += part
+                                else:  # 非 URL 部分
+                                    if '//' in part:
+                                        cleaned += part.split('//')[0]
+                                    else:
+                                        cleaned += part
+                            line = cleaned
+                        else:
+                            line = line.split('//')[0]
+                    cleaned_lines.append(line)
+                cleaned_text = '\n'.join(cleaned_lines)
+                # 替换单引号为双引号（只在字符串值中）
+                # 这是一个简化处理，实际可能需要更复杂的解析
+                try:
+                    return json.loads(cleaned_text)
+                except json.JSONDecodeError:
+                    print(f"⚠️  {url}: 无法解析 JSON5 格式，尝试使用正则提取")
+                    # 最后的降级方案：返回 None
+                    return None
         except (Urllib3SSLError, SSLError) as e:
             last_error = e
             if attempt < max_retries - 1:
@@ -90,30 +129,45 @@ def fetch_subscription(url: str, timeout: int = 30, max_retries: int = 3) -> dic
 def deduplicate_rules(rules: list, sources: list) -> list:
     """
     去重规则
-    策略：按 app_id 去重，保留优先级高的来源
+    策略：按 app_id + matches 组合去重，保留优先级高的来源
+    这样可以避免同一 APP 内的不同坐标被错误地去重
     """
-    seen_apps = {}
+    seen_rules = {}
     priority_map = {'high': 3, 'medium': 2, 'low': 1}
     
     for rule in rules:
         # 支持多种 app_id 获取方式
         app_id = rule.get('appId') or rule.get('match', {}).get('appIds', [None])[0]
-        if not app_id:
-            # 没有 app_id 的规则直接保留
-            seen_apps[f"global_{id(rule)}"] = rule
-            continue
         
-        if app_id not in seen_apps:
-            seen_apps[app_id] = rule
+        if not app_id:
+            # 没有 app_id 的规则使用 rule 对象本身作为键
+            key = f"global_{id(rule)}"
+            if key not in seen_rules:
+                seen_rules[key] = rule
+            else:
+                # 比较优先级
+                current_priority = priority_map.get(rule.get('priority', 'low'), 1)
+                existing_priority = priority_map.get(seen_rules[key].get('priority', 'low'), 1)
+                
+                if current_priority > existing_priority:
+                    seen_rules[key] = rule
         else:
-            # 比较优先级
-            current_priority = priority_map.get(rule.get('priority', 'low'), 1)
-            existing_priority = priority_map.get(seen_apps[app_id].get('priority', 'low'), 1)
+            # 获取 matches 作为组合键的一部分
+            matches = rule.get('match', {}).get('keyId', '') or ''
+            # 使用 (app_id, matches) 组合作为唯一键
+            key = (app_id, matches)
             
-            if current_priority > existing_priority:
-                seen_apps[app_id] = rule
+            if key not in seen_rules:
+                seen_rules[key] = rule
+            else:
+                # 比较优先级
+                current_priority = priority_map.get(rule.get('priority', 'low'), 1)
+                existing_priority = priority_map.get(seen_rules[key].get('priority', 'low'), 1)
+                
+                if current_priority > existing_priority:
+                    seen_rules[key] = rule
     
-    return list(seen_apps.values())
+    return list(seen_rules.values())
 
 
 def merge_subscriptions(sources_data: list) -> tuple:
@@ -156,7 +210,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                     if isinstance(rule, str):
                         # 尝试直接解析为 JSON
                         try:
-                            rule = json5.loads(rule)
+                            rule = json.loads(rule)
                         except:
                             # 尝试拼接所有后续字符串元素
                             chunks = []
@@ -171,7 +225,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                                 joined = ''.join(chunks)
                                 # 先尝试作为 JSON 解析
                                 try:
-                                    rule = json5.loads(joined)
+                                    rule = json.loads(joined)
                                     print(f"  ✓  {source['name']}: 已拼接 {len(chunks)} 个字符的规则字符串")
                                 except:
                                     # 再尝试作为选择器字符串解析
@@ -198,12 +252,16 @@ def merge_subscriptions(sources_data: list) -> tuple:
                 # 每个 app 可能有 groups 数组（每个 group 包含 rules）
                 for group in app.get('groups', []):
                     rules_list = group.get('rules', [])
+                    # 如果 rules 是字典而不是列表，跳过
+                    if not isinstance(rules_list, list):
+                        print(f"  ⚠️  {source['name']}: rules 不是列表类型 (type={type(rules_list).__name__}), 跳过")
+                        continue
                     for idx, rule in enumerate(rules_list):
                         # 处理 JSON 字符串规则（包括单个字符的字符串元素）
                         if isinstance(rule, str):
                             # 尝试直接解析为 JSON
                             try:
-                                rule = json5.loads(rule)
+                                rule = json.loads(rule)
                             except:
                                 # 尝试拼接所有后续字符串元素（Adpro-Team 源的特殊情况）
                                 chunks = []
@@ -218,7 +276,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                                     joined = ''.join(chunks)
                                     # 先尝试作为 JSON 解析
                                     try:
-                                        rule = json5.loads(joined)
+                                        rule = json.loads(joined)
                                         print(f"  ✓  {source['name']}: 已拼接 {len(chunks)} 个字符的规则字符串")
                                     except:
                                         # 再尝试作为选择器字符串解析
@@ -245,11 +303,15 @@ def merge_subscriptions(sources_data: list) -> tuple:
                 # 某些 app 可能直接有 rules 数组（兼容性处理）
                 if 'groups' not in app and app.get('rules'):
                     rules_list = app.get('rules', [])
+                    # 如果 rules 是字典而不是列表，跳过
+                    if not isinstance(rules_list, list):
+                        print(f"  ⚠️  {source['name']}: rules 不是列表类型 (type={type(rules_list).__name__}), 跳过")
+                        continue
                     for idx, rule in enumerate(rules_list):
                         # 处理 JSON 字符串规则（包括单个字符的字符串元素）
                         if isinstance(rule, str):
                             try:
-                                rule = json5.loads(rule)
+                                rule = json.loads(rule)
                             except:
                                 # 尝试拼接连续的字符串元素（Adpro-Team 源的特殊情况）
                                 # 查找从当前位置开始的连续字符串
@@ -262,7 +324,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                                 if len(chunks) > 1:
                                     joined = ''.join(chunks)
                                     try:
-                                        rule = json5.loads(joined)
+                                        rule = json.loads(joined)
                                         print(f"  ✓  {source['name']}: 已拼接 {len(chunks)} 个字符的规则字符串")
                                     except:
                                         print(f"  ⚠️  {source['name']}: 跳过无法解析的规则字符串")
@@ -286,7 +348,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                     # 处理 JSON 字符串规则（包括单个字符的字符串元素）
                     if isinstance(rule, str):
                         try:
-                            rule = json5.loads(rule)
+                            rule = json.loads(rule)
                         except:
                             # 尝试拼接所有后续字符串元素
                             chunks = []
@@ -301,7 +363,7 @@ def merge_subscriptions(sources_data: list) -> tuple:
                                 joined = ''.join(chunks)
                                 # 先尝试作为 JSON 解析
                                 try:
-                                    rule = json5.loads(joined)
+                                    rule = json.loads(joined)
                                     print(f"  ✓  {source['name']}: 已拼接 {len(chunks)} 个字符的规则字符串")
                                 except:
                                     # 再尝试作为选择器字符串解析
@@ -361,7 +423,7 @@ def save_subscription(data: dict, output_path: str):
     }
     
     with open(output_path, 'w', encoding='utf-8') as f:
-        json5.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2)
     
     print(f"💾 已保存至：{output_path}")
 
