@@ -1,0 +1,55 @@
+name: Sync GKD Subscriptions
+
+on:
+  # 姣忓ぉ鍖椾含鏃堕棿鏃╀笂 8 鐐规墽琛岋紙UTC 鏃堕棿 00:00锛?  schedule:
+    - cron: '0 0 * * *'
+  # 鏀寔鎵嬪姩瑙﹀彂
+  workflow_dispatch:
+
+# 宸ヤ綔娴佹潈闄愰厤缃?- 涓鸿嚜鍔ㄥ寲浠诲姟鎻愪緵蹇呰鐨勬潈闄?permissions:
+  contents: write      # 鍏佽鎺ㄩ€佹洿鏀瑰埌浠撳簱锛堟洿鏂?merged.json5锛?  actions: write       # 鍏佽璁块棶 workflow 杩愯鍘嗗彶
+  packages: write      # 鍏佽鍙戝竷 package锛堥鐣欐墿灞曞姛鑳斤級
+  security-events: write  # 鍏佽涓婁紶瀹夊叏鎵弿缁撴灉锛堥鐣欙級
+
+env:
+  # 閰嶇疆淇℃伅
+  SUBSCRIPTION_FILE: subscriptions.json5
+  MERGED_FILE: merged.json5
+  SOURCE_LIST: source-list.json
+
+jobs:
+  sync-and-merge:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 妫€鍑轰唬鐮?      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # 2. 璁剧疆 Python 鐜
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      # 3. 瀹夎渚濊禆
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests json5
+      
+      # 4. 鎵ц鍚屾鍜屽悎骞惰剼鏈?      - name: Run sync and merge script
+        run: |
+          python scripts/sync_and_merge.py
+      
+      # 5. 鎻愪氦骞舵帹閫佹洿鏂?      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          # 鍙湁鍦ㄦ湁鏇存敼鏃舵墠鎻愪氦
+          if git diff-index --quiet HEAD; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: auto-update GKD subscriptions [skip ci]"
+            git push
+          fi
