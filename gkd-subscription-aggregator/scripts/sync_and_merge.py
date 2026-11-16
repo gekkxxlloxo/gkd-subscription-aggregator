@@ -116,8 +116,12 @@ def deduplicate_rules(rules: list, sources: list) -> list:
     return list(seen_apps.values())
 
 
-def merge_subscriptions(sources_data: list) -> dict:
-    """合并多个订阅源"""
+def merge_subscriptions(sources_data: list) -> tuple:
+    """合并多个订阅源
+    
+    返回：
+        tuple: (merged_data, success_sources, failed_sources)
+    """
     merged = {
         "name": "GKD 聚合订阅",
         "updateUrl": None,
@@ -126,6 +130,8 @@ def merge_subscriptions(sources_data: list) -> dict:
     }
     
     all_rules = []
+    success_sources = []
+    failed_sources = []
     
     for source in sources_data:
         if not source.get('enabled', True):
@@ -138,6 +144,9 @@ def merge_subscriptions(sources_data: list) -> dict:
         if rules:
             # 为规则添加来源信息（支持两种数据结构：groups 和 apps）
             rule_count = 0
+            
+            # 记录成功获取的源
+            success_sources.append(source['name'])
             
             # 处理 groups 结构（传统格式）
             for group in rules.get('groups', []):
@@ -318,6 +327,7 @@ def merge_subscriptions(sources_data: list) -> dict:
             print(f"✅ {source['name']}: 获取成功，规则数：{rule_count}")
         else:
             print(f"❌ {source['name']}: 获取失败")
+            failed_sources.append(source['name'])
     
     # 去重
     print(f"\n🔄 去重规则...")
@@ -338,7 +348,7 @@ def merge_subscriptions(sources_data: list) -> dict:
     
     merged['groups'] = list(groups_by_source.values())
     
-    return merged
+    return merged, success_sources, failed_sources
 
 
 def save_subscription(data: dict, output_path: str):
@@ -388,13 +398,13 @@ def main():
     print(f"📋 配置了 {len(sources)} 个订阅源，其中 {len(enabled_sources)} 个启用\n")
     
     # 合并订阅
-    merged = merge_subscriptions(enabled_sources)
+    merged, success_sources, failed_sources = merge_subscriptions(enabled_sources)
     
     # 保存结果
     save_subscription(merged, output_path)
     
     # 更新配置
-    success_count = sum(1 for s in enabled_sources if any(g['name'].startswith(s['name']) for g in merged['groups']))
+    success_count = len(success_sources)
     error_count = len(enabled_sources) - success_count
     update_source_list(config_path, success_count, error_count)
     
