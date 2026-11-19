@@ -2,19 +2,22 @@ name: Sync GKD Subscriptions
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs at 00:00 # 每天 UTC 00:00 (北京时间 08:00)
-  workflow_dispatch: # 支持手动触发
+    - cron: '0 0 * * *'  # 每天 UTC 00:00（北京时间 08:00）
+  workflow_dispatch:    # 支持手动触发
 
-# 工作流权限配置 - 为自动化任务提供必要的权限
+# 权限配置
 permissions:
-  contents: write      # 允许推送更改到仓库（更新 merged.json5）
-  actions: write       # 允许访问 workflow 运行历史
-  packages: write      # 允许发布 package（预留扩展功能）
-  security-events: write  # 允许上传安全扫描结果（预留）
+  contents: write      # 允许推送 merged.json5
+
+# 同一时间只跑一个实例，避免并发 push 冲突
+concurrency:
+  group: gkd-sync
+  cancel-in-progress: false
 
 jobs:
   sync-and-merge:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,15 +30,30 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests json5
+          pip install json5
 
       - name: Run sync and merge script
         run: python scripts/sync_and_merge.py
+
+      - name: Verify output
+        run: |
+          test -f merged.json5 || { echo "::error::merged.json5 未生成"; exit 1; }
+          python - <<'PY'
+          import json5
+          d = json5.loads(open('merged.json5', encoding='utf-8').read())
+          n = len(d.get('apps', []))
+          print(f"apps={n} globalGroups={len(d.get('globalGroups', []))}")
+          assert n > 0, "merged.json5 中没有任何 apps，源全部拉取失败"
+          PY
 
       - name: Commit and push if changed
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "chore: auto-update GKD subscriptions" || exit 0
+          git add merged.json5
+          if git diff --cached --quiet; then
+            echo "无变化，跳过提交"
+            exit 0
+          fi
+          git commit -m "chore: auto-update GKD subscriptions"
           git push
