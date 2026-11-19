@@ -23,4 +23,8 @@ ENV/
 Thumbs.db
 
 # GKD
-merged.json5
+# 注意：merged.json5 是自动生成的订阅产物，必须提交到仓库，
+# 供 GKD 客户端通过 raw 链接订阅。此前误将其忽略，导致
+# 工作流即使跑通也不会真正发布订阅。
+# scripts/merged.json5 为历史遗留输出目录，同样忽略。
+scripts/merged.json5
