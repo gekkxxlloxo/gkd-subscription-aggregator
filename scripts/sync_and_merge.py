@@ -12,6 +12,7 @@
    初版按 data['groups'] 取值，永远拿到 0 条规则。
 4. 去重键用 app 的 id 字段（apps[].id），不是 match.appIds。
 5. 输出路径与订阅链接一致，产物写回仓库根目录 merged.json5。
+6. 产物内容无变化时保留原文件，避免每次定时运行都产生仅时间戳不同的空提交。
 """
 
 import json
@@ -263,9 +264,34 @@ def merge_subscriptions(sources_config: list) -> dict:
 
 
 def save_subscription(data: dict):
+    """写出产物。
+
+    若产物内容（除 generatedAt 外）与现有文件一致，则保留旧文件不动，
+    避免每次定时运行都产生一次仅时间戳不同的无意义提交。
+    """
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    payload = json5.dumps(data, indent=2, ensure_ascii=False)
+
+    if OUTPUT_PATH.exists():
+        try:
+            old = json5.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            old = None
+        if isinstance(old, dict):
+            old_cmp = {k: v for k, v in old.items() if k != "metadata"}
+            new_cmp = {k: v for k, v in data.items() if k != "metadata"}
+            old_meta = {k: v for k, v in (old.get("metadata") or {}).items()
+                        if k != "generatedAt"}
+            new_meta = {k: v for k, v in (data.get("metadata") or {}).items()
+                        if k != "generatedAt"}
+            if old_cmp == new_cmp and old_meta == new_meta:
+                print("\n💾 内容无变化，保留原文件（generatedAt 不更新）")
+                print(f"   {OUTPUT_PATH}")
+                return
+
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json5.dump(data, f, indent=2, ensure_ascii=False)
+        f.write(payload)
     print(f"\n💾 已保存到：{OUTPUT_PATH}")
 
 
