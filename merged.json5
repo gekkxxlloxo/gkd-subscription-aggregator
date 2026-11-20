@@ -33097,6 +33097,19 @@
             },
           ],
         },
+        {
+          key: 9001,
+          name: "开屏广告-跳过按钮(快照定制)",
+          activityIds: [
+            "com.kugou.android.app.MediaActivity",
+          ],
+          rules: [
+            {
+              matches: "[desc=\"UniSplashCard\"] @ViewGroup[clickable=true] > [text=\"跳过\"]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69623,7 +69636,7 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T15:11:12Z",
+    generatedAt: "2026-11-20T15:32:35Z",
     totalApps: 1097,
     totalGlobalGroups: 9,
     sourceCount: 11,
