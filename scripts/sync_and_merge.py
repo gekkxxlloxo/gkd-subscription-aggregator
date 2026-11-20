@@ -34,6 +34,7 @@ except ImportError:
 
 
 SOURCE_LIST_PATH = Path(__file__).parent / "source-list.json"
+CUSTOM_RULES_PATH = Path(__file__).parent / "custom-rules.json5"
 OUTPUT_PATH = Path(__file__).parent.parent / "merged.json5"
 
 GITHUB_OWNER = "gekkxxlloxo"
@@ -48,6 +49,99 @@ USER_AGENT = (
 def load_source_list() -> dict:
     with open(SOURCE_LIST_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def load_custom_rules() -> dict:
+    """读取常驻自定义规则（本地文件，非远程订阅，不会被 CI 覆盖）。
+
+    文件不存在或解析失败时返回空结构，保证合并流程不中断。
+    """
+    if not CUSTOM_RULES_PATH.exists():
+        print("ℹ️  未找到 custom-rules.json5，跳过自定义规则")
+        return {"apps": [], "globalGroups": []}
+    try:
+        data = json5.loads(CUSTOM_RULES_PATH.read_text(encoding="utf-8"))
+        apps = data.get("apps") or []
+        global_groups = data.get("globalGroups") or []
+        if not isinstance(apps, list):
+            apps = []
+        if not isinstance(global_groups, list):
+            global_groups = []
+        print(f"📝 加载自定义规则：{len(apps)} 个应用 / {len(global_groups)} 个全局组")
+        return {"apps": apps, "globalGroups": global_groups}
+    except Exception as e:
+        print(f"⚠️  自定义规则解析失败，跳过：{type(e).__name__}: {e}")
+        return {"apps": [], "globalGroups": []}
+
+
+def apply_custom_rules(merged_apps: dict, merged_groups: dict,
+                       custom: dict, priority_map: dict) -> tuple[int, int]:
+    """把自定义规则并入已合并的 app / globalGroups。
+
+    - app 按 id 匹配：已存在则按 group.key 合并，key 冲突时自定义覆盖上游
+      （用于修正上游那条点不到节点的开屏规则）；不存在则新增。
+    - globalGroups 按 key 合并，key 相同自定义覆盖。
+    返回 (新增或覆盖的 app 数, 新增或覆盖的 group 数)。
+    """
+    custom_priority = 4  # 高于 high(3)，保证自定义覆盖同名 app
+    added_apps = 0
+    merged_group_count = 0
+
+    for app in custom.get("apps", []):
+        if not isinstance(app, dict):
+            continue
+        app_id = app.get("id")
+        if not app_id:
+            continue
+        custom_groups = app.get("groups") or []
+        if not isinstance(custom_groups, list):
+            custom_groups = []
+
+        existing = merged_apps.get(app_id)
+        if existing is None:
+            merged_apps[app_id] = {
+                "app": app,
+                "priority": custom_priority,
+                "source": "custom-rules.json5",
+            }
+            added_apps += 1
+            merged_group_count += len(custom_groups)
+            continue
+
+        # 已有该 app：按 group.key 合并，自定义覆盖同名 key
+        base_app = existing["app"]
+        base_groups = base_app.get("groups")
+        if not isinstance(base_groups, list):
+            base_groups = []
+        key_to_index = {}
+        for idx, g in enumerate(base_groups):
+            if isinstance(g, dict) and g.get("key") is not None:
+                key_to_index[g.get("key")] = idx
+
+        for cg in custom_groups:
+            if not isinstance(cg, dict):
+                continue
+            ck = cg.get("key")
+            if ck is not None and ck in key_to_index:
+                base_groups[key_to_index[ck]] = cg  # 自定义覆盖
+            else:
+                base_groups.append(cg)
+            merged_group_count += 1
+        base_app["groups"] = base_groups
+
+    for g in custom.get("globalGroups", []):
+        if not isinstance(g, dict):
+            continue
+        key = g.get("key")
+        gkey = f"global:{key}"
+        merged_groups[gkey] = {
+            "group": g,
+            "priority": custom_priority,
+            "source": "custom-rules.json5",
+        }
+        merged_group_count += 1
+
+    return added_apps, merged_group_count
 
 
 def _http_get(url: str, timeout: int = 45) -> bytes:
@@ -223,6 +317,15 @@ def merge_subscriptions(sources_config: list) -> dict:
             "priority": source.get("priority", "low"),
         }
         print(f"   ✅ {len(apps)} 个应用 / {len(global_groups)} 个全局组")
+
+    # 并入常驻自定义规则（本地文件，每次同步都会带上，不会被覆盖）
+    custom = load_custom_rules()
+    added_apps, merged_group_count = apply_custom_rules(
+        merged_apps, merged_groups, custom, priority_map
+    )
+    if added_apps or merged_group_count:
+        print(f"   ✅ 自定义规则已并入：{added_apps} 个新应用 / "
+              f"{merged_group_count} 个规则组")
 
     if not merged_apps and not merged_groups:
         print("❌ 没有成功拉取任何订阅源")
