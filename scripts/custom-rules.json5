@@ -1,0 +1,28 @@
+// 常驻自定义规则 - 由 AI 根据用户提供的 GKD 快照编写
+// 每次 GitHub Actions 同步时会被并入 merged.json5，不会被上游源覆盖
+// 规则组 key 使用 9000 以上，避免与上游规则组的 key 冲突
+// 新增规则请按快照的真实节点属性编写（text / desc / clickable / 层级）
+{
+  apps: [
+    {
+      id: 'com.kugou.android',
+      name: '酷狗音乐',
+      groups: [
+        {
+          key: 9001,
+          name: '开屏广告-跳过按钮(快照定制)',
+          activityIds: ['com.kugou.android.app.MediaActivity'],
+          rules: [
+            {
+              // 广点通开屏 UniSplashCard 内，点"跳过"文字的可点击父容器
+              // 快照验证: 节点16 text=跳过 clickable=false, 父节点15 clickable=true
+              matches: '[desc="UniSplashCard"] @ViewGroup[clickable=true] > [text="跳过"]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  globalGroups: [],
+}
