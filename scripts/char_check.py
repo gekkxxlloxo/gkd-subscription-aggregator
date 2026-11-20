@@ -16,7 +16,6 @@ import os
 import re
 import sys
 from pathlib import Path
-from urllib.parse import unquote
 
 
 # 需要检测的 Unicode 特殊字符
@@ -47,7 +46,17 @@ SPECIAL_CHARS = {
 # 代码中常见的智能引号正则
 SMART_QUOTE_PATTERN = re.compile(r'[\u2018\u2019\u201c\u201d]')
 DASH_PATTERN = re.compile(r'[\u2013\u2014]')
-PATH_MIX_PATTERN = re.compile(r'[^/\\]:\\[^\\]|[^/\\]:/[^/]')
+PATH_MIX_PATTERN = re.compile(r'[^/\\]:\[^\\]|[^/\\]:/[^/]')
+
+# 只检查源码 / 配置文件。绝不能扫描生成产物（如 merged.json5），
+# 那是脚本每天从各订阅源拉取的数据，里面的智能引号属于上游内容，
+# 不是 AI 写的代码；扫描它会产生大量误报并让 CI 失败。
+CHECK_SUFFIXES = {'.py', '.js', '.ts', '.jsx', '.tsx', '.json', '.json5',
+                  '.yml', '.yaml', '.toml', '.md', '.sh', '.css', '.html'}
+EXCLUDE_FILES = {'merged.json5'}
+
+# 源码里被引用的文件名（用于检测"横杠被写成下划线"导致路径失效）
+FILE_REF_PATTERN = re.compile(r'["\']([A-Za-z0-9_.\-]+\.(?:json5?|py|ya?ml|toml|txt|md))["\']')
 
 
 def check_path_hyphens(file_path: Path) -> list:
@@ -199,7 +208,7 @@ def check_file_content(file_path: Path) -> list:
         except UnicodeDecodeError:
             try:
                 content = file_path.read_text(encoding='gbk')
-            except:
+            except UnicodeDecodeError:
                 return []  # 二进制文件，跳过
         
         # 检查 Unicode 问题
@@ -214,32 +223,52 @@ def check_file_content(file_path: Path) -> list:
     return issues
 
 
-def check_project_paths() -> list:
-    """检查项目路径结构"""
+def check_project_paths(project_root: Path) -> list:
+    """检测代码里引用的文件名把横杠写成了下划线，导致路径失效。
+
+    这是本项目 AI 曾踩过的真实坑：source-list.json 被写成 source_list.json，
+    连续报错十几次都没定位到。这里通过比对磁盘真实文件名来精准拦截。
+    """
     issues = []
-    project_root = Path.cwd()
-    
-    # 检查常见的项目路径
-    common_paths = [
-        'source-list.json',
-        'sync_and_merge.py',
-        'gkd-subscription-aggregator',
-        'char-check.py',
-    ]
-    
-    for path in common_paths:
-        full_path = project_root / path
-        if full_path.exists():
-            # 检查是否应该包含横杠
-            if 'source-list' in path:
-                issues.append(
-                    f"文件 '{path}' 可能应该是 'source-list.json' (包含横杠)"
-                )
-            elif 'sync_and_merge' in path:
-                issues.append(
-                    f"文件 '{path}' 可能应该是 'sync-and-merge.py' (包含横杠)"
-                )
-    
+
+    # 磁盘上真实存在的文件名（含带横杠的名字及其下划线变体）
+    real_names = set()
+    for p in project_root.rglob('*'):
+        if p.is_file():
+            real_names.add(p.name)
+
+    hyphen_to_underscore = {}
+    for name in real_names:
+        if '-' in name:
+            hyphen_to_underscore[name.replace('-', '_')] = name
+
+    # 在源码里找被引用、但磁盘上不存在的文件名
+    for p in project_root.rglob('*'):
+        if not p.is_file() or p.suffix.lower() not in CHECK_SUFFIXES:
+            continue
+        if p.name in EXCLUDE_FILES:
+            continue
+        try:
+            text = p.read_text(encoding='utf-8', errors='ignore')
+        except OSError:
+            continue
+
+        for line_no, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            if stripped.startswith('#') or stripped.startswith('//'):
+                continue
+            for match in FILE_REF_PATTERN.finditer(line):
+                ref = match.group(1)
+                if ref in real_names:
+                    continue
+                # 引用不存在 → 看它是否恰好是某个横杠文件名的下划线版
+                if ref in hyphen_to_underscore:
+                    issues.append(
+                        f"{p.relative_to(project_root)} 行 {line_no}: "
+                        f"引用 '{ref}' 但磁盘上是 '{hyphen_to_underscore[ref]}' "
+                        f"(横杠被写成了下划线，会导致路径失效)"
+                    )
+
     return issues
 
 
@@ -259,17 +288,17 @@ def main():
     all_issues = []
     files_checked = 0
     
-    # 检查项目路径
-    print("📁 检查项目路径结构...")
-    path_issues = check_project_paths()
+    # 检查路径引用（横杠被写成下划线）
+    print("📁 检查路径引用（横杠/下划线）...")
+    path_issues = check_project_paths(target_dir)
     if path_issues:
         all_issues.extend(path_issues)
         for issue in path_issues:
             print(f"  ⚠️  {issue}")
     print()
     
-    # 检查文件内容
-    print("📄 检查文件内容...")
+    # 检查源码 / 配置文件内容（跳过生成产物）
+    print("📄 检查源码文件内容...")
     exclude_dirs = {'.git', 'venv', '.venv', '__pycache__', 'node_modules', '.tox', '.mypy_cache'}
     
     for root, dirs, files in os.walk(target_dir):
@@ -278,14 +307,13 @@ def main():
         
         for file in files:
             file_path = Path(root) / file
-            
-            # 跳过大文件和二进制文件
-            if file_path.stat().st_size > 10 * 1024 * 1024:  # 10MB
+
+            # 只检查源码 / 配置白名单，跳过 merged.json5 等生成产物与二进制
+            if file_path.name in EXCLUDE_FILES:
                 continue
-            
-            if file_path.suffix in ['.pyc', '.so', '.dll', '.exe', '.bin']:
+            if file_path.suffix.lower() not in CHECK_SUFFIXES:
                 continue
-            
+
             files_checked += 1
             issues = check_file_content(file_path)
             if issues:
@@ -308,7 +336,7 @@ def main():
         print("💡 建议:")
         print("  - 路径中的横杠应使用 '-' 而不是 '_'")
         print("  - 代码中应使用直引号 ' 和 \" 而不是智能引号")
-        print("  - 路径分隔符应使用正斜杠 / 而不是反斜杠 \")
+        print("  - 路径分隔符应使用正斜杠 / 而不是反斜杠 \\")
         print("  - 避免使用不可见 Unicode 字符")
     else:
         print()
