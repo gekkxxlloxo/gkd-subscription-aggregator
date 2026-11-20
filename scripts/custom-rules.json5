@@ -21,6 +21,20 @@
             },
           ],
         },
+        {
+          key: 9002,
+          name: '信息流广告-关闭按钮(快照定制)',
+          activityIds: ['com.kugou.android.app.MediaActivity'],
+          rules: [
+            {
+              // 首页信息流广告卡片右上角的 X：desc="关闭" 且 clickable=true 的 ImageView
+              // 快照验证(2026-11-20): 节点261 desc=关闭 clickable=true, bounds 1260,2227-1440,2407
+              // 全树 desc=关闭 且 clickable=true 仅此一个；desc=关闭侧边栏 是不同值不会误匹配
+              matches: '[desc="关闭"][clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
       ],
     },
   ],
