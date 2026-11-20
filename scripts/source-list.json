@@ -15,10 +15,45 @@
       "name": "AIsouler",
       "url": "https://raw.githubusercontent.com/AIsouler/GKD_subscription/main/dist/AIsouler_gkd.json5",
       "mirror_urls": [
+        "https://registry.npmmirror.com/@aisouler/gkd_subscription/latest/files/dist/AIsouler_gkd.json5",
         "https://cdn.jsdelivr.net/gh/AIsouler/GKD_subscription@main/dist/AIsouler_gkd.json5"
       ],
-      "description": "国产应用深度优化，覆盖 1200+ 应用",
+      "description": "国产应用深度优化，实测 886 应用 / 2074 规则",
       "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "Adpro-Team",
+      "url": "https://registry.npmmirror.com/@adpro/gkd_subscription/latest/files/dist/Adpro_gkd.json5",
+      "mirror_urls": [
+        "https://raw.githubusercontent.com/Adpro-Team/GKD_subscription/main/dist/Adpro_gkd.json5",
+        "https://raw.gitmirror.com/Adpro-Team/GKD_subscription/main/dist/Adpro_gkd.json5"
+      ],
+      "description": "规则丰富、更新频繁，实测 678 应用 / 1561 规则",
+      "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "gkd-kit-official",
+      "url": "https://raw.githubusercontent.com/gkd-kit/subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://raw.gitmirror.com/gkd-kit/subscription/main/dist/gkd.json5"
+      ],
+      "description": "GKD 官方订阅，实测 610 应用 / 1371 规则",
+      "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "九千院",
+      "url": "https://raw.githubusercontent.com/jiuqianyuan/GKD_subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://raw.gitmirror.com/jiuqianyuan/GKD_subscription/main/dist/gkd.json5"
+      ],
+      "description": "九千院订阅，实测 776 应用 / 1797 规则",
+      "priority": "medium",
       "enabled": true,
       "status": "active"
     },
@@ -26,9 +61,10 @@
       "name": "GanLin",
       "url": "https://raw.githubusercontent.com/ganlinte/GKD-subscription/main/dist/ganlin_gkd.json5",
       "mirror_urls": [
+        "https://registry.npmmirror.com/@ganlinte/gkd-subscription/latest/files/dist/ganlin_gkd.json5",
         "https://cdn.jsdelivr.net/gh/ganlinte/GKD-subscription@main/dist/ganlin_gkd.json5"
       ],
-      "description": "视频平台优化，覆盖 300+ 应用",
+      "description": "甘霖订阅，实测 610 应用 / 1389 规则",
       "priority": "medium",
       "enabled": true,
       "status": "active"
@@ -45,13 +81,14 @@
       "status": "active"
     },
     {
-      "name": "AIsouler-Lite",
-      "url": "https://raw.githubusercontent.com/AIsouler/gkd-subscription/main/dist/gkd.json5",
+      "name": "DreamXiaoYao (npm)",
+      "url": "https://registry.npmjs.org/gkd-subscription/-/gkd-subscription-2.0.79.tgz",
+      "type": "npm",
       "mirror_urls": [
-        "https://cdn.jsdelivr.net/gh/AIsouler/gkd-subscription@main/dist/gkd.json5"
+        "https://cdn.jsdelivr.net/npm/gkd-subscription@2.0.79/dist/gkd.json5"
       ],
-      "description": "AIsouler 精简版订阅",
-      "priority": "low",
+      "description": "梦念逍遥订阅，npm 托管，速度快",
+      "priority": "medium",
       "enabled": true,
       "status": "active"
     },
@@ -61,20 +98,31 @@
       "mirror_urls": [
         "https://cdn.jsdelivr.net/gh/oklazeno/gkd-subscription@main/gkd.json5"
       ],
-      "description": "轻量省电，覆盖 500+ 应用",
+      "description": "轻量订阅，实测 1036 应用",
       "priority": "low",
       "enabled": true,
       "status": "active"
     },
     {
-      "name": "DreamXiaoYao (npm)",
-      "url": "https://registry.npmjs.org/gkd-subscription/-/gkd-subscription-2.0.79.tgz",
-      "type": "npm",
+      "name": "aoguai",
+      "url": "https://cdn.jsdelivr.net/gh/aoguai/subscription@custom/dist/aoguai_gkd.json5",
       "mirror_urls": [
-        "https://cdn.jsdelivr.net/npm/gkd-subscription@2.0.79/dist/gkd.json5"
+        "https://raw.githubusercontent.com/aoguai/subscription/custom/dist/aoguai_gkd.json5",
+        "https://raw.gitmirror.com/aoguai/subscription/custom/dist/aoguai_gkd.json5"
       ],
-      "description": "梦念逍遥订阅，npm 托管，速度快",
-      "priority": "medium",
+      "description": "奥怪订阅，含较多自动化规则，实测 72 应用 / 280 规则",
+      "priority": "low",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "AIsouler-Lite",
+      "url": "https://raw.githubusercontent.com/AIsouler/gkd-subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://cdn.jsdelivr.net/gh/AIsouler/gkd-subscription@main/dist/gkd.json5"
+      ],
+      "description": "AIsouler 精简版订阅",
+      "priority": "low",
       "enabled": true,
       "status": "active"
     }
