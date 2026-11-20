@@ -49569,6 +49569,32 @@
             },
           ],
         },
+        {
+          key: 9008,
+          name: "小程序促销弹窗-关闭X-FamilyMart(快照定制)",
+          activityIds: [
+            ".plugin.appbrand.ui.AppBrandUI",
+          ],
+          rules: [
+            {
+              matches: "View[childCount=2] > Image[width>85][width<105][height>90][height<110]",
+              action: "clickCenter",
+            },
+          ],
+        },
+        {
+          key: 9009,
+          name: "小程序促销弹窗-关闭X-银泰(快照定制)",
+          activityIds: [
+            ".plugin.appbrand.ui.AppBrandUI",
+          ],
+          rules: [
+            {
+              matches: "TextView[text=\"\"]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69705,10 +69731,29 @@
         },
       ],
     },
+    {
+      id: "com.hzpd.jwztc",
+      name: "警察叔叔",
+      groups: [
+        {
+          key: 9007,
+          name: "温馨提醒弹窗-关闭X(快照定制)",
+          activityIds: [
+            "com.alibaba.gov.android.skeleton.entry.activity.MainTabActivity",
+          ],
+          rules: [
+            {
+              matches: "[vid=\"iv_close\"][clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
+      ],
+    },
   ],
   metadata: {
-    generatedAt: "2026-11-20T17:02:50Z",
-    totalApps: 1098,
+    generatedAt: "2026-11-20T17:10:10Z",
+    totalApps: 1099,
     totalGlobalGroups: 9,
     sourceCount: 11,
     sources: {
