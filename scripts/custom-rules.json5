@@ -109,6 +109,62 @@
         },
       ],
     },
+    {
+      id: 'com.hzpd.jwztc',
+      name: '警察叔叔',
+      groups: [
+        {
+          key: 9007,
+          name: '温馨提醒弹窗-关闭X(快照定制)',
+          activityIds: ['com.alibaba.gov.android.skeleton.entry.activity.MainTabActivity'],
+          rules: [
+            {
+              // 首页"温馨提醒"公告弹窗下方 banner 的 X（白色圆圈的关闭按钮）
+              // 快照验证(2026-11-21): 节点385 ImageView vid=iv_close clickable=true
+              // bounds 573,2477-866,2770（全树 vid=iv_close 唯一）
+              matches: '[vid="iv_close"][clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'com.tencent.mm',
+      name: '微信',
+      groups: [
+        {
+          key: 9008,
+          name: '小程序促销弹窗-关闭X-FamilyMart(快照定制)',
+          activityIds: ['.plugin.appbrand.ui.AppBrandUI'],
+          rules: [
+            {
+              // 微信小程序(全家 FamilyMart)商品促销弹窗底部的白色圆圈 X
+              // H5 广告: X 是 WebView 内 android.widget.Image，clickable=false
+              // 快照验证(2026-11-21): 节点138 Image box=672,2308-768,2408 (96x100)
+              // 同名同尺寸另有顶部横幅图标54，用父容器 childCount=2 排除；全树唯一命中
+              matches: 'View[childCount=2] > Image[width>85][width<105][height>90][height<110]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+        {
+          key: 9009,
+          name: '小程序促销弹窗-关闭X-银泰(快照定制)',
+          activityIds: ['.plugin.appbrand.ui.AppBrandUI'],
+          rules: [
+            {
+              // 微信小程序(临平银泰)关东煮代金券促销弹窗底部的白色圆圈 X
+              // H5 广告: X 是 WebView 内 android.widget.TextView text=私用区\ue75c，clickable=false
+              // 快照验证(2026-11-21): 节点44 box=680,2320-760,2400 (80x80)
+              // text=私用区字符全树唯一；尺寸 80x80 的 TextView 也唯一
+              matches: 'TextView[text="\ue75c"]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
   ],
   globalGroups: [],
 }
