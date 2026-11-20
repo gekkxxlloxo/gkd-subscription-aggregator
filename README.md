@@ -1,97 +1,106 @@
-# GKD Subscription Aggregator
+<div align="center">
 
-> 自动聚合多个 GKD 订阅源，智能去重，一键订阅
+<img src="assets/neon-banner.svg" alt="GKD Subscription Aggregator" width="100%">
 
-## 功能特点
+<p>
+<img src="https://img.shields.io/badge/SOURCES-11-ff2d95?style=for-the-badge" alt="11 sources">
+<img src="https://img.shields.io/badge/APPS-1098%2B-00f0ff?style=for-the-badge" alt="1098 plus apps">
+<img src="https://img.shields.io/badge/SYNC-DAILY-b026ff?style=for-the-badge" alt="daily sync">
+<img src="https://img.shields.io/badge/CUSTOM-RULES-fcee0a?style=for-the-badge" alt="custom rules">
+<img src="https://github.com/gekkxxlloxo/gkd-subscription-aggregator/actions/workflows/sync.yml/badge.svg?branch=main" alt="sync workflow status">
+<img src="https://img.shields.io/badge/LICENSE-MIT-00ff9f?style=for-the-badge" alt="MIT license">
+</p>
 
-- **自动聚合**: 从 11 个上游订阅源拉取规则
-- **智能去重**: 按 `appId` 去重，同一应用保留优先级最高源的规则
-- **常驻自定义规则**: 用户发的 GKD 快照可转成规则，每次同步自动并入，不会被上游覆盖
-- **定时更新**: 每天北京时间 08:00 自动同步
-- **手动触发**: 支持通过 GitHub Actions 随时手动更新
-- **镜像回退**: 主源失败时自动切换 jsDelivr / npmmirror / gitmirror
-- **AI 代码质检**: 字符与路径检查 + Ruff lint，拦截横杠写成下划线等生成错误
+<img src="assets/neon-divider.svg" width="100%" height="20" alt="">
 
-## 订阅地址
+**一个链接，聚合全部 GKD 规则。每天自动同步，零手动维护。**
+
+</div>
+
+## 🔗 订阅入口 / SUBSCRIBE
+
+把下面这个地址导入 GKD 客户端即可：
 
 ```
 https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/merged.json5
 ```
 
-在 GKD 客户端里导入这个链接即可。当前聚合结果约 1098 个应用，以产物内 `metadata` 为准。
+产物由 GitHub Actions 每天生成并提交，当前约 **1098 个应用**，实时数量以文件里的 `metadata` 为准。
 
-## 订阅源列表（11 个启用）
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
 
-| 名称 | 优先级 | 说明 |
-|------|--------|------|
-| Lin-arm | high | 持续维护中，规则稳定 |
-| AIsouler | high | 国产应用深度优化 |
-| Adpro-Team | high | 规则丰富、更新频繁 |
-| gkd-kit-official | high | GKD 官方订阅 |
-| 九千院 | medium | 规则量大 |
-| GanLin | medium | 视频平台优化 |
-| MengNianXiaoYao | medium | 游戏党专属 |
-| DreamXiaoYao (npm) | medium | npm 托管，速度快 |
-| oklazeno | low | 轻量订阅 |
-| aoguai | low | 含较多自动化规则 |
-| AIsouler-Lite | low | AIsouler 精简版 |
+## ⚡ 核心能力 / FEATURES
 
-## 自行部署
+- 🟣 **多源聚合** 11 个上游订阅，按 `appId` 智能去重，同一应用保留最高优先级源的规则
+- 🔵 **镜像回退** 主源失败时自动切换 jsDelivr / npmmirror / gitmirror
+- 🟢 **常驻自定义规则** 用户提供的 GKD 快照可转成规则，每次同步自动并入，不会被上游覆盖
+- 🟡 **定时同步** 每天北京时间 08:00 自动运行，也支持手动触发
+- 🔴 **AI 代码质检** 字符与路径检查 + Ruff lint，拦截横杠写成下划线一类的生成错误
 
-```bash
-git clone https://github.com/gekkxxlloxo/gkd-subscription-aggregator.git
-cd gkd-subscription-aggregator
-pip install json5 ruff
-python scripts/sync_and_merge.py
-python scripts/char_check.py
-python -m ruff check scripts/
-```
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
 
-产物输出到仓库根目录 `merged.json5`，与上面的订阅链接对应。
+## 📡 订阅源矩阵 / SOURCES
 
-## 文件说明
+| 源 | 优先级 | 说明 |
+|---|:---:|---|
+| Lin-arm | 🟣 high | 持续维护中，规则稳定 |
+| AIsouler | 🟣 high | 国产应用深度优化 |
+| Adpro-Team | 🟣 high | 规则丰富、更新频繁 |
+| gkd-kit-official | 🟣 high | GKD 官方订阅 |
+| 九千院 | 🔵 medium | 规则量大 |
+| GanLin | 🔵 medium | 视频平台优化 |
+| MengNianXiaoYao | 🔵 medium | 游戏党专属 |
+| DreamXiaoYao (npm) | 🔵 medium | npm 托管，速度快 |
+| oklazeno | 🟢 low | 轻量订阅 |
+| aoguai | 🟢 low | 含较多自动化规则 |
+| AIsouler-Lite | 🟢 low | AIsouler 精简版 |
+
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
+
+## ✨ 定制规则 / CUSTOM RULES
+
+`scripts/custom-rules.json5` 是常驻自定义规则的唯一入口。每次同步按应用 id 和规则组 key 并入产物，key 使用 9000 以上避免与上游冲突。
+
+| key | 应用 | 作用 |
+|:---:|---|---|
+| 9001 | 酷狗音乐 | 开屏广告跳过按钮 |
+| 9002 | 酷狗音乐 | 首页信息流广告关闭按钮 |
+| 9003 | YouTube Morphe | 跳过开头赞助片段 |
+
+想加规则？发一份 GKD 快照给维护者，规则做好后更新订阅即可生效。
+
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
+
+## 🗂 文件结构 / LAYOUT
 
 | 文件 | 作用 |
-|------|------|
-| `.github/workflows/sync.yml` | GitHub Actions 工作流：同步、质检、校验、自动提交 |
+|---|---|
+| `.github/workflows/sync.yml` | 同步、质检、校验、自动提交 |
 | `scripts/sync_and_merge.py` | 核心聚合脚本 |
-| `scripts/source-list.json` | 订阅源配置（脚本实际读取此文件） |
-| `source-list.json` | 上面那份的镜像，改动时需同步 |
+| `scripts/source-list.json` | 订阅源配置（脚本实际读取） |
+| `source-list.json` | 上面那份的镜像，改动需同步 |
 | `scripts/custom-rules.json5` | 常驻自定义规则入口 |
 | `scripts/char_check.py` | 字符与路径检查 |
 | `ruff.toml` | Python lint 配置 |
-| `merged.json5` | 自动生成的聚合产物，需提交到仓库，勿手工编辑 |
+| `merged.json5` | 自动生成的产物，勿手工编辑 |
 | `AGENTS.md` | 给接手 AI 的工作说明书 |
 
-## 配置说明
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
 
-编辑 `scripts/source-list.json` 可以：
+## 🤖 给 AI 的说明 / FOR AGENTS
 
-- 添加或删除订阅源
-- 调整优先级（`high` / `medium` / `low`）
-- 启用或禁用特定源
-- 配置镜像地址（`mirror_urls`）
+如果你是接手维护这个项目的 AI，请先读 [AGENTS.md](AGENTS.md)。里面有文件职责、修改流程、GitHub 操作命令、快照转规则步骤，以及历史上踩过的坑。换模型不用重新摸索。
 
-注意根目录 `source-list.json` 只是给人看的镜像，脚本不读它，但改动后两份必须保持一致。
+<div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
 
-## 自定义规则
+## 📊 运行状态 / STATUS
 
-`scripts/custom-rules.json5` 里的规则每次同步都会自动并入 `merged.json5`，按应用 id 和规则组 key 合并，不会被上游覆盖。规则组 key 使用 9000 以上避免冲突。
+在 [Actions](https://github.com/gekkxxlloxo/gkd-subscription-aggregator/actions) 页面查看每次同步结果。
 
-目前内置的定制规则：
+<div align="center">
 
-- 酷狗音乐开屏广告「跳过」按钮（key 9001）
-- 酷狗音乐首页信息流广告关闭按钮（key 9002）
-- YouTube Morphe 跳过开头按钮（key 9003）
+<img src="assets/neon-divider.svg" width="100%" height="20" alt="">
 
-## 给 AI 的说明
+<sub>BUILT WITH LIGHT AND LOGIC / GKD SUBSCRIPTION AGGREGATOR</sub>
 
-如果你是要接手维护这个项目的 AI，请先完整阅读 [AGENTS.md](AGENTS.md)。里面有文件职责、修改流程、GitHub 操作命令、快照转规则的步骤，以及历史上踩过的坑。换了模型也不用重新摸索。
-
-## 工作流状态
-
-查看 [Actions](https://github.com/gekkxxlloxo/gkd-subscription-aggregator/actions) 页面了解更新状态。
-
-## 许可证
-
-MIT License
+</div>
