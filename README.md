@@ -69,6 +69,9 @@ https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/m
 | 9004 | 钉钉 | 首页横幅广告关闭按钮 |
 | 9005 | 酷狗音乐 | 签到弹窗立即签到 |
 | 9006 | 酷狗音乐 | 签到成功弹窗关闭按钮 |
+| 9007 | 警察叔叔 | 温馨提醒弹窗关闭按钮 |
+| 9008 | 微信 | 小程序促销弹窗关闭(FamilyMart) |
+| 9009 | 微信 | 小程序促销弹窗关闭(银泰) |
 
 想加规则？发一份 GKD 快照给维护者，规则做好后更新订阅即可生效。
 
