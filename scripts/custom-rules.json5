@@ -163,6 +163,22 @@
             },
           ],
         },
+        {
+          key: 9010,
+          name: '小程序顶部横幅广告-关闭X(快照定制)',
+          activityIds: ['.plugin.appbrand.ui.AppBrandUI'],
+          rules: [
+            {
+              // 微信小游戏页面顶部"钻会员专享优惠"横幅右侧的白色圆圈 X
+              // H5 广告: X 是 WebView 内 android.widget.ImageView，clickable=false
+              // 快照验证(2026-11-21): 节点73 box=1104,554-1232,682 (128x128)
+              // 用 ImageView 精确标签 + 尺寸定位：全树 ImageView 中该尺寸唯一
+              // 注意用 ImageView 而非 Image，后者会匹配到底部4个124x120导航图标
+              matches: 'ImageView[width>115][width<140][height>115][height<140]',
+              action: 'clickCenter',
+            },
+          ],
+        },
       ],
     },
   ],
