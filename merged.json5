@@ -49595,6 +49595,19 @@
             },
           ],
         },
+        {
+          key: 9010,
+          name: "小程序顶部横幅广告-关闭X(快照定制)",
+          activityIds: [
+            ".plugin.appbrand.ui.AppBrandUI",
+          ],
+          rules: [
+            {
+              matches: "ImageView[width>115][width<140][height>115][height<140]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69752,7 +69765,7 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T17:10:10Z",
+    generatedAt: "2026-11-20T17:14:33Z",
     totalApps: 1099,
     totalGlobalGroups: 9,
     sourceCount: 11,
