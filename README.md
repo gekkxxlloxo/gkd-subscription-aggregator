@@ -4,7 +4,7 @@
 
 <p>
 <img src="https://img.shields.io/badge/SOURCES-11-ff2d95?style=for-the-badge" alt="11 sources">
-<img src="https://img.shields.io/badge/APPS-1098%2B-00f0ff?style=for-the-badge" alt="1098 plus apps">
+<img src="https://img.shields.io/badge/APPS-1103%2B-00f0ff?style=for-the-badge" alt="1103 plus apps">
 <img src="https://img.shields.io/badge/SYNC-DAILY-b026ff?style=for-the-badge" alt="daily sync">
 <img src="https://img.shields.io/badge/CUSTOM-RULES-fcee0a?style=for-the-badge" alt="custom rules">
 <img src="https://github.com/gekkxxlloxo/gkd-subscription-aggregator/actions/workflows/sync.yml/badge.svg?branch=main" alt="sync workflow status">
@@ -25,13 +25,13 @@
 https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/merged.json5
 ```
 
-产物由 GitHub Actions 每天生成并提交，当前约 **1098 个应用**，实时数量以文件里的 `metadata` 为准。
+产物由 GitHub Actions 每天生成并提交，当前约 **1103 个应用**，实时数量以文件里的 `metadata` 为准。
 
 <div align="center"><img src="assets/neon-divider.svg" width="100%" height="20" alt=""></div>
 
 ## ⚡ 核心能力 / FEATURES
 
-- 🟣 **多源聚合** 11 个上游订阅，按 `appId` 智能去重，同一应用保留最高优先级源的规则
+- 🟣 **多源聚合** 12 个上游订阅，按 `appId` 智能去重，同一应用保留最高优先级源的规则
 - 🔵 **镜像回退** 主源失败时自动切换 jsDelivr / npmmirror / gitmirror
 - 🟢 **常驻自定义规则** 用户提供的 GKD 快照可转成规则，每次同步自动并入，不会被上游覆盖
 - 🟡 **定时同步** 每天北京时间 08:00 自动运行，也支持手动触发
@@ -51,6 +51,7 @@ https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/m
 | GanLin | 🔵 medium | 视频平台优化 |
 | MengNianXiaoYao | 🔵 medium | 游戏党专属 |
 | DreamXiaoYao (npm) | 🔵 medium | npm 托管，速度快 |
+| VolcanoSAhrimp | 🔵 medium | 火山虾订阅，含 TikTok 等 793 应用 |
 | oklazeno | 🟢 low | 轻量订阅 |
 | aoguai | 🟢 low | 含较多自动化规则 |
 | AIsouler-Lite | 🟢 low | AIsouler 精简版 |
