@@ -33136,6 +33136,32 @@
             },
           ],
         },
+        {
+          key: 9005,
+          name: "签到弹窗-立即签到(快照定制)",
+          activityIds: [
+            "com.kugou.android.app.MediaActivity",
+          ],
+          rules: [
+            {
+              matches: "ViewGroup[childCount=7] + ViewGroup[clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
+        {
+          key: 9006,
+          name: "签到成功弹窗-关闭X(快照定制)",
+          activityIds: [
+            "com.kugou.android.app.MediaActivity",
+          ],
+          rules: [
+            {
+              matches: "ViewGroup[clickable=true][width>50][width<90][height>50][height<90]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69681,7 +69707,7 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T16:53:33Z",
+    generatedAt: "2026-11-20T17:02:50Z",
     totalApps: 1098,
     totalGlobalGroups: 9,
     sourceCount: 11,
