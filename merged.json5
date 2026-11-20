@@ -33110,6 +33110,19 @@
             },
           ],
         },
+        {
+          key: 9002,
+          name: "信息流广告-关闭按钮(快照定制)",
+          activityIds: [
+            "com.kugou.android.app.MediaActivity",
+          ],
+          rules: [
+            {
+              matches: "[desc=\"关闭\"][clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69636,7 +69649,7 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T15:32:35Z",
+    generatedAt: "2026-11-20T15:52:26Z",
     totalApps: 1097,
     totalGlobalGroups: 9,
     sourceCount: 11,
