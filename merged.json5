@@ -69647,10 +69647,29 @@
         },
       ],
     },
+    {
+      id: "app.morphe.android.youtube",
+      name: "YouTube Morphe",
+      groups: [
+        {
+          key: 9003,
+          name: "跳过开头-赞助片段(快照定制)",
+          activityIds: [
+            "com.google.android.apps.youtube.app.watchwhile.MainActivity",
+          ],
+          rules: [
+            {
+              matches: "[desc=\"跳过\"][clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
+      ],
+    },
   ],
   metadata: {
-    generatedAt: "2026-11-20T15:52:26Z",
-    totalApps: 1097,
+    generatedAt: "2026-11-20T16:04:18Z",
+    totalApps: 1098,
     totalGlobalGroups: 9,
     sourceCount: 11,
     sources: {
