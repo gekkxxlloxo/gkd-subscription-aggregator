@@ -57,6 +57,28 @@
         },
       ],
     },
+    {
+      id: 'com.alibaba.android.rimet',
+      name: '钉钉',
+      groups: [
+        {
+          key: 9004,
+          name: '首页横幅广告-关闭按钮(快照定制)',
+          activityIds: ['com.alibaba.android.rimet.biz.LaunchHomeActivity'],
+          rules: [
+            {
+              // 首页消息列表顶部横幅广告右上角的 X
+              // 快照验证(2026-11-21): 红圈中心(1292,683)
+              // 节点63 icft_close text=\ue9fe clickable=false (字体图标，点不到)
+              // 父节点62 layout_close FrameLayout clickable=true
+              // bounds 1272,624-1352,704（全树 vid=layout_close 唯一）
+              matches: '[vid="layout_close"][clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
   ],
   globalGroups: [],
 }
