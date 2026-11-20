@@ -37,6 +37,26 @@
         },
       ],
     },
+    {
+      id: 'app.morphe.android.youtube',
+      name: 'YouTube Morphe',
+      groups: [
+        {
+          key: 9003,
+          name: '跳过开头-赞助片段(快照定制)',
+          activityIds: ['com.google.android.apps.youtube.app.watchwhile.MainActivity'],
+          rules: [
+            {
+              // 按钮文字 "跳过开头" 的节点 clickable=false，真正可点的是外层 FrameLayout
+              // 快照验证(2026-11-21): 节点49 text=跳过开头 clickable=false
+              // 父节点47 desc=跳过 clickable=true, bounds 1020,594-1440,786（全树唯一）
+              matches: '[desc="跳过"][clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
   ],
   globalGroups: [],
 }
