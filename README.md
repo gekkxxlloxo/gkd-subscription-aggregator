@@ -66,6 +66,7 @@ https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/m
 | 9001 | 酷狗音乐 | 开屏广告跳过按钮 |
 | 9002 | 酷狗音乐 | 首页信息流广告关闭按钮 |
 | 9003 | YouTube Morphe | 跳过开头赞助片段 |
+| 9004 | 钉钉 | 首页横幅广告关闭按钮 |
 
 想加规则？发一份 GKD 快照给维护者，规则做好后更新订阅即可生效。
 
