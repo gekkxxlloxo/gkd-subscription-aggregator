@@ -35,6 +35,36 @@
             },
           ],
         },
+        {
+          key: 9005,
+          name: '签到弹窗-立即签到(快照定制)',
+          activityIds: ['com.kugou.android.app.MediaActivity'],
+          rules: [
+            {
+              // 豪华VIP签到奖励弹窗里的"立即签到"粉红大按钮
+              // 该弹窗为 Flutter 渲染，无 text/desc 锚点，只能用结构+尺寸定位
+              // 快照验证(2026-11-21): 节点47 ViewGroup[childCount=7] 是签到天数行(7个奖励格)
+              // 它的下一个兄弟节点103 ViewGroup[clickable=true] 即"立即签到"(1200x160)，全树唯一
+              // 注意 108 是下方"点击广告签到"按钮，尺寸相同，靠 childCount=7 的前缀排除
+              matches: 'ViewGroup[childCount=7] + ViewGroup[clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+        {
+          key: 9006,
+          name: '签到成功弹窗-关闭X(快照定制)',
+          activityIds: ['com.kugou.android.app.MediaActivity'],
+          rules: [
+            {
+              // 金币中心"签到成功"弹窗右上角的 X
+              // 同为 Flutter 渲染无文字锚点，尺寸定位: 节点414 clickable=true 70x70
+              // 快照验证(2026-11-21): 全树 clickable 且 70x70 仅此一个，唯一命中
+              matches: 'ViewGroup[clickable=true][width>50][width<90][height>50][height<90]',
+              action: 'clickCenter',
+            },
+          ],
+        },
       ],
     },
     {
