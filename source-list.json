@@ -1,134 +1,128 @@
 {
   "sources": [
     {
+      "name": "Lin-arm",
+      "url": "https://raw.githubusercontent.com/Lin-arm/GKD_subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://cdn.jsdelivr.net/gh/Lin-arm/GKD_subscription@main/dist/gkd.json5"
+      ],
+      "description": "持续维护中，规则稳定，1000+ 应用",
+      "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
       "name": "AIsouler",
       "url": "https://raw.githubusercontent.com/AIsouler/GKD_subscription/main/dist/AIsouler_gkd.json5",
       "mirror_urls": [
-        "https://gitmirror.com/AIsouler/GKD_subscription/raw/main/dist/AIsouler_gkd.json5",
+        "https://registry.npmmirror.com/@aisouler/gkd_subscription/latest/files/dist/AIsouler_gkd.json5",
         "https://cdn.jsdelivr.net/gh/AIsouler/GKD_subscription@main/dist/AIsouler_gkd.json5"
       ],
-      "description": "国产应用深度优化，覆盖 1200+ 应用",
+      "description": "国产应用深度优化，实测 886 应用 / 2074 规则",
       "priority": "high",
-      "enabled": true,
-      "status": "active"
-    },
-    {
-      "name": "GKD_THS",
-      "url": "https://raw.githubusercontent.com/GKD-ths/team/main/dist/index.json5",
-      "mirror_urls": [
-        "https://gitmirror.com/GKD-ths/team/raw/main/dist/index.json5",
-        "https://cdn.jsdelivr.net/gh/GKD-ths/team@main/dist/index.json5"
-      ],
-      "description": "多维护者联合更新，覆盖 2000+ 应用",
-      "priority": "high",
-      "enabled": true,
-      "status": "active"
-    },
-    {
-      "name": "MengNianXiaoYao",
-      "url": "https://raw.githubusercontent.com/MengNianXiaoYao/GKD-MengNianXiaoYao/main/GKD.json",
-      "mirror_urls": [
-        "https://gitmirror.com/MengNianXiaoYao/GKD-MengNianXiaoYao/raw/main/GKD.json",
-        "https://cdn.jsdelivr.net/gh/MengNianXiaoYao/GKD-MengNianXiaoYao@main/GKD.json"
-      ],
-      "description": "游戏党专属，覆盖 1500+ 应用",
-      "priority": "medium",
-      "enabled": true,
-      "status": "active"
-    },
-    {
-      "name": "AoGuai",
-      "url": "https://raw.githubusercontent.com/aoguail/GKD-Subscription/main/GKD.json",
-      "mirror_urls": [
-        "https://gitmirror.com/aoguail/GKD-Subscription/raw/main/GKD.json",
-        "https://cdn.jsdelivr.net/gh/aoguail/GKD-Subscription@main/GKD.json"
-      ],
-      "description": "轻量省电，覆盖 500+ 应用",
-      "priority": "low",
-      "enabled": true,
-      "status": "active"
-    },
-    {
-      "name": "GanLin",
-      "url": "https://raw.githubusercontent.com/ganlinboy/GKD-Subscription/main/GKD.json",
-      "mirror_urls": [
-        "https://gitmirror.com/ganlinboy/GKD-Subscription/raw/main/GKD.json",
-        "https://cdn.jsdelivr.net/gh/ganlinboy/GKD-Subscription@main/GKD.json"
-      ],
-      "description": "视频平台优化，覆盖 300+ 应用",
-      "priority": "medium",
       "enabled": true,
       "status": "active"
     },
     {
       "name": "Adpro-Team",
-      "url": "https://raw.githubusercontent.com/adpro-team/gkd-subscription/main/dist/index.json5",
+      "url": "https://registry.npmmirror.com/@adpro/gkd_subscription/latest/files/dist/Adpro_gkd.json5",
       "mirror_urls": [
-        "https://gitmirror.com/adpro-team/gkd-subscription/raw/main/dist/index.json5",
-        "https://cdn.jsdelivr.net/gh/adpro-team/gkd-subscription@main/dist/index.json5"
+        "https://raw.githubusercontent.com/Adpro-Team/GKD_subscription/main/dist/Adpro_gkd.json5",
+        "https://raw.gitmirror.com/Adpro-Team/GKD_subscription/main/dist/Adpro_gkd.json5"
       ],
-      "description": "国际应用优化，覆盖 800+ 应用",
+      "description": "规则丰富、更新频繁，实测 678 应用 / 1561 规则",
+      "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "gkd-kit-official",
+      "url": "https://raw.githubusercontent.com/gkd-kit/subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://raw.gitmirror.com/gkd-kit/subscription/main/dist/gkd.json5"
+      ],
+      "description": "GKD 官方订阅，实测 610 应用 / 1371 规则",
+      "priority": "high",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "九千院",
+      "url": "https://raw.githubusercontent.com/jiuqianyuan/GKD_subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://raw.gitmirror.com/jiuqianyuan/GKD_subscription/main/dist/gkd.json5"
+      ],
+      "description": "九千院订阅，实测 776 应用 / 1797 规则",
       "priority": "medium",
       "enabled": true,
       "status": "active"
     },
     {
-      "name": "GanLin-All",
-      "url": "https://raw.githubusercontent.com/ganlinboy/GKD-Subscription/main/all.json",
+      "name": "GanLin",
+      "url": "https://raw.githubusercontent.com/ganlinte/GKD-subscription/main/dist/ganlin_gkd.json5",
       "mirror_urls": [
-        "https://gitmirror.com/ganlinboy/GKD-Subscription/raw/main/all.json",
-        "https://cdn.jsdelivr.net/gh/ganlinboy/GKD-Subscription@main/all.json"
+        "https://registry.npmmirror.com/@ganlinte/gkd-subscription/latest/files/dist/ganlin_gkd.json5",
+        "https://cdn.jsdelivr.net/gh/ganlinte/GKD-subscription@main/dist/ganlin_gkd.json5"
       ],
-      "description": "全量订阅（推荐关闭）",
-      "priority": "low",
-      "enabled": false,
-      "status": "deprecated"
-    },
-    {
-      "name": "Lin-arm",
-      "url": "https://raw.githubusercontent.com/Lin-arm/GKD-subscription/master/dist/Lin-arm_gkd.json5",
-      "mirror_urls": [
-        "https://gitmirror.com/Lin-arm/GKD-subscription/raw/master/dist/Lin-arm_gkd.json5",
-        "https://cdn.jsdelivr.net/gh/Lin-arm/GKD-subscription@master/dist/Lin-arm_gkd.json5"
-      ],
-      "description": "持续维护中，规则稳定",
+      "description": "甘霖订阅，实测 610 应用 / 1389 规则",
       "priority": "medium",
       "enabled": true,
       "status": "active"
     },
     {
-      "name": "Mrlc",
-      "url": "https://raw.githubusercontent.com/mrlctate/GKD-subscription/main/gkd.json5",
+      "name": "MengNianXiaoYao",
+      "url": "https://raw.githubusercontent.com/MengNianxiaoyao/gkd-subscription/main/dist/gkd.json5",
       "mirror_urls": [
-        "https://gitmirror.com/mrlctate/GKD-subscription/raw/main/gkd.json5",
-        "https://cdn.jsdelivr.net/gh/mrlctate/GKD-subscription@main/gkd.json5"
+        "https://cdn.jsdelivr.net/gh/MengNianxiaoyao/gkd-subscription@main/dist/gkd.json5"
       ],
-      "description": "规则实用，更新频繁",
-      "priority": "medium",
-      "enabled": true,
-      "status": "active"
-    },
-    {
-      "name": "LenorEric",
-      "url": "https://raw.githubusercontent.com/LenorEric/GKD-subscription/master/dist/gkd.json5",
-      "mirror_urls": [
-        "https://gitmirror.com/LenorEric/GKD-subscription/raw/master/dist/gkd.json5",
-        "https://cdn.jsdelivr.net/gh/LenorEric/GKD-subscription@master/dist/gkd.json5"
-      ],
-      "description": "长期活跃，质量可靠",
+      "description": "游戏党专属，覆盖 500+ 应用",
       "priority": "medium",
       "enabled": true,
       "status": "active"
     },
     {
       "name": "DreamXiaoYao (npm)",
-      "url": "https://unpkg.com/gkd-subscription@latest",
+      "url": "https://registry.npmjs.org/gkd-subscription/-/gkd-subscription-2.0.79.tgz",
+      "type": "npm",
       "mirror_urls": [
-        "https://cdn.jsdelivr.net/npm/gkd-subscription@latest/gkd.json5",
-        "https://registry.npmmirror.com/gkd-subscription/-/gkd-subscription-latest.tgz"
+        "https://cdn.jsdelivr.net/npm/gkd-subscription@2.0.79/dist/gkd.json5"
       ],
       "description": "梦念逍遥订阅，npm 托管，速度快",
       "priority": "medium",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "oklazeno",
+      "url": "https://raw.githubusercontent.com/oklazeno/gkd-subscription/main/gkd.json5",
+      "mirror_urls": [
+        "https://cdn.jsdelivr.net/gh/oklazeno/gkd-subscription@main/gkd.json5"
+      ],
+      "description": "轻量订阅，实测 1036 应用",
+      "priority": "low",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "aoguai",
+      "url": "https://cdn.jsdelivr.net/gh/aoguai/subscription@custom/dist/aoguai_gkd.json5",
+      "mirror_urls": [
+        "https://raw.githubusercontent.com/aoguai/subscription/custom/dist/aoguai_gkd.json5",
+        "https://raw.gitmirror.com/aoguai/subscription/custom/dist/aoguai_gkd.json5"
+      ],
+      "description": "奥怪订阅，含较多自动化规则，实测 72 应用 / 280 规则",
+      "priority": "low",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "AIsouler-Lite",
+      "url": "https://raw.githubusercontent.com/AIsouler/gkd-subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://cdn.jsdelivr.net/gh/AIsouler/gkd-subscription@main/dist/gkd.json5"
+      ],
+      "description": "AIsouler 精简版订阅",
+      "priority": "low",
       "enabled": true,
       "status": "active"
     }
