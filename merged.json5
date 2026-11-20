@@ -21848,6 +21848,19 @@
             },
           ],
         },
+        {
+          key: 9004,
+          name: "首页横幅广告-关闭按钮(快照定制)",
+          activityIds: [
+            "com.alibaba.android.rimet.biz.LaunchHomeActivity",
+          ],
+          rules: [
+            {
+              matches: "[vid=\"layout_close\"][clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
       ],
     },
     {
@@ -69668,7 +69681,7 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T16:04:18Z",
+    generatedAt: "2026-11-20T16:53:33Z",
     totalApps: 1098,
     totalGlobalGroups: 9,
     sourceCount: 11,
