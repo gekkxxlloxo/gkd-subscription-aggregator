@@ -69726,6 +69726,109 @@
       ],
     },
     {
+      id: "com.qiqi.hhvideo",
+      name: "电影猎手",
+      groups: [
+        {
+          key: 1,
+          name: "青少年模式",
+          actionMaximum: 1,
+          resetMatch: "app",
+          fastQuery: true,
+          rules: [
+            {
+              matches: "[text=\"开启青少年模式\"] + [text=\"我已知晓\"]",
+              exampleUrls: "https://m.gkd.li/57941037/c50c5c8f-5fec-437e-908c-abc7b2cedee8",
+              snapshotUrls: "https://i.gkd.li/i/14343546",
+            },
+          ],
+          enable: false,
+        },
+      ],
+    },
+    {
+      id: "com.zdbq.ljtq.ljweather",
+      name: "莉景天气",
+      groups: [
+        {
+          key: 1,
+          name: "全屏广告-弹窗广告",
+          desc: "点击关闭",
+          rules: [
+            {
+              key: 0,
+              fastQuery: true,
+              matchTime: 10000,
+              actionMaximum: 1,
+              resetMatch: "app",
+              activityIds: "com.zdbq.ljtq.ljweather.IndexActivity",
+              matches: "[vid=\"dialog_daily_activity_card_cancel\"]",
+            },
+          ],
+          enable: false,
+        },
+      ],
+    },
+    {
+      id: "com.kdmei.huifuwang",
+      name: "一键书阁",
+      groups: [
+        {
+          key: 1,
+          name: "开屏广告",
+          fastQuery: true,
+          matchTime: 10000,
+          actionMaximum: 1,
+          resetMatch: "app",
+          rules: [
+            {
+              matches: [
+                "[text$=\"跳过\"]",
+                "[text^=\"跳过\"]",
+              ],
+            },
+          ],
+          order: -10,
+        },
+        {
+          key: 2,
+          name: "功能类-广告跳过",
+          enable: false,
+          rules: [
+            "ImageView[desc$=\"关闭\"]",
+            "TextView[text=\"跳过\"][text.length=2]",
+            "ViewGroup[desc=\"top_close_button\"]",
+            "ImageView[vid=\"ad_close\"]",
+            "ImageView[vid*=\"close\" || vid*=\"btn\"]",
+          ],
+        },
+        {
+          key: 3,
+          name: "功能类-章节最后的广告死吧",
+          desc: "还是单独开一个解决每个章节最后的广告好了",
+          enable: false,
+          rules: [
+            "@ImageView < FrameLayout <3 FrameLayout < LinearLayout < FrameLayout < FrameLayout < [vid=\"bannerContainer\"]",
+          ],
+        },
+      ],
+    },
+    {
+      id: "com.immomo.momo",
+      name: "MOMO陌陌",
+      groups: [
+        {
+          key: 1,
+          name: "青少年模式",
+          actionMaximum: 1,
+          resetMatch: "app",
+          rules: "[text$=\"青少年模式\"] + [text=\"知道了\"]",
+          snapshotUrls: "https://i.gkd.li/i/14395028",
+          enable: false,
+        },
+      ],
+    },
+    {
       id: "app.morphe.android.youtube",
       name: "YouTube Morphe",
       groups: [
@@ -69765,10 +69868,10 @@
     },
   ],
   metadata: {
-    generatedAt: "2026-11-20T17:14:33Z",
-    totalApps: 1099,
+    generatedAt: "2026-11-20T18:00:45Z",
+    totalApps: 1103,
     totalGlobalGroups: 9,
-    sourceCount: 11,
+    sourceCount: 12,
     sources: {
       "Lin-arm": {
         url: "https://raw.githubusercontent.com/Lin-arm/GKD_subscription/main/dist/gkd.json5",
@@ -69835,6 +69938,12 @@
         appCount: 76,
         globalGroupCount: 2,
         priority: "low",
+      },
+      VolcanoSAhrimp: {
+        url: "https://raw.githubusercontent.com/VolcanoSAhrimp/gkd-rule/main/dist/gkd.json5",
+        appCount: 793,
+        globalGroupCount: 3,
+        priority: "medium",
       },
     },
     note: "此文件由 GitHub Actions 自动更新，请勿手动编辑",
