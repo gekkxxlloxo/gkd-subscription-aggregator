@@ -125,6 +125,17 @@
       "priority": "low",
       "enabled": true,
       "status": "active"
+    },
+    {
+      "name": "VolcanoSAhrimp",
+      "url": "https://raw.githubusercontent.com/VolcanoSAhrimp/gkd-rule/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://fastly.jsdelivr.net/gh/VolcanoSAhrimp/gkd-rule@main/dist/gkd.json5"
+      ],
+      "description": "火山虾订阅，含 TikTok 规则，实测 793 应用",
+      "priority": "medium",
+      "enabled": true,
+      "status": "active"
     }
   ],
   "settings": {
