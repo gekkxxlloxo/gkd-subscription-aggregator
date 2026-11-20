@@ -30,10 +30,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install json5
+          pip install json5 ruff
 
       - name: Run sync and merge script
         run: python scripts/sync_and_merge.py
+
+      - name: Check characters and paths (AI code quality)
+        run: python scripts/char_check.py
+
+      - name: Run Ruff linter
+        run: ruff check scripts/
 
       - name: Verify output
         run: |

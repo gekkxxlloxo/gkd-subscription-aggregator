@@ -1,0 +1,30 @@
+# Ruff 配置文件
+# 用于 Python 代码静态分析
+
+[lint]
+# 启用的规则
+select = [
+    "E",      # pycodestyle 错误
+    "W",      # pycodestyle 警告
+    "F",      # Pyflakes
+    "I",      # isort (导入排序)
+    "UP",     # pyupgrade (Python 升级建议)
+    "B",      # flake8-bugbear (常见 bug 模式)
+    "SIM",    # flake8-simplify (简化建议)
+    "C4",     # flake8-comprehensions (列表推导式优化)
+]
+
+# 忽略的规则
+ignore = [
+    "E501",   # 行长度限制（避免与格式化冲突）
+    "W292",   # 缺少尾随换行符
+]
+
+# Python 版本
+target-version = "py311"
+
+[format]
+# 格式化配置
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
