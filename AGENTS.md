@@ -10,7 +10,7 @@
 - 仓库: `gekkxxlloxo/gkd-subscription-aggregator` (分支 main)
 - 订阅链接: `https://raw.githubusercontent.com/gekkxxlloxo/gkd-subscription-aggregator/main/merged.json5`
 - 工作流: `.github/workflows/sync.yml`，每天 UTC 00:00 (北京时间 08:00) 自动跑，也支持手动 `workflow_dispatch`
-- 当前规模: 11 个源，约 1098 个 app (以远程 merged.json5 的 metadata 为准)
+- 当前规模: 14 个源，约 1128 个 app (以远程 merged.json5 的 metadata 为准)
 
 数据流:
 
