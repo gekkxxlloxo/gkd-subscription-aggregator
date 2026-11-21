@@ -136,6 +136,29 @@
       "priority": "medium",
       "enabled": true,
       "status": "active"
+    },
+    {
+      "name": "Dear-Ded",
+      "url": "https://raw.githubusercontent.com/Dear-Ded/gkd-subscription/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://fastly.jsdelivr.net/gh/Dear-Ded/gkd-subscription@main/dist/gkd.json5",
+        "https://cdn.jsdelivr.net/gh/Dear-Ded/gkd-subscription@main/dist/gkd.json5"
+      ],
+      "description": "清净精选订阅，署名聚合+每日增量，实测 1115 应用，带来约 20 个独有 app",
+      "priority": "low",
+      "enabled": true,
+      "status": "active"
+    },
+    {
+      "name": "yandongxu0821",
+      "url": "https://raw.githubusercontent.com/yandongxu0821/gkd_subscription_rules/main/dist/gkd.json5",
+      "mirror_urls": [
+        "https://cdn.jsdelivr.net/gh/yandongxu0821/gkd_subscription_rules@main/dist/gkd.json5"
+      ],
+      "description": "小众应用补充订阅，实测 24 应用，带来 4 个独有 app（百度翻译/掌上看家等）",
+      "priority": "low",
+      "enabled": true,
+      "status": "active"
     }
   ],
   "settings": {
