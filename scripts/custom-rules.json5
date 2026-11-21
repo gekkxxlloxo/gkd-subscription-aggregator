@@ -130,6 +130,28 @@
       ],
     },
     {
+      id: 'com.duowan.mobile',
+      name: 'YY',
+      groups: [
+        {
+          key: 9011,
+          name: '闪耀发言活动弹窗-关闭X(快照定制)',
+          activityIds: ['com.duowan.mobile.basemedia.watchlive.activity.LiveTemplateActivity'],
+          rules: [
+            {
+              // YY 直播间"闪耀发言"活动弹窗底部中央的白色圆圈 X
+              // 快照验证(2026-11-21): 节点26 ImageView vid=iv_close clickable=true
+              // bounds 648,2472-792,2616 (144x144)，底部中央；红圈处即此按钮
+              // 全树 vid=iv_close 且 clickable=true 唯一；另有 header/footer 两个同名容器
+              // 但 visibleToUser=false 且高度为 0，不会误命中
+              matches: '[vid="iv_close"][clickable=true]',
+              action: 'clickCenter',
+            },
+          ],
+        },
+      ],
+    },
+    {
       id: 'com.tencent.mm',
       name: '微信',
       groups: [

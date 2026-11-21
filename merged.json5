@@ -73516,10 +73516,29 @@
         },
       ],
     },
+    {
+      id: "com.duowan.mobile",
+      name: "YY",
+      groups: [
+        {
+          key: 9011,
+          name: "闪耀发言活动弹窗-关闭X(快照定制)",
+          activityIds: [
+            "com.duowan.mobile.basemedia.watchlive.activity.LiveTemplateActivity",
+          ],
+          rules: [
+            {
+              matches: "[vid=\"iv_close\"][clickable=true]",
+              action: "clickCenter",
+            },
+          ],
+        },
+      ],
+    },
   ],
   metadata: {
-    generatedAt: "2026-11-21T07:49:45Z",
-    totalApps: 1128,
+    generatedAt: "2026-11-21T14:24:02Z",
+    totalApps: 1129,
     totalGlobalGroups: 16,
     sourceCount: 14,
     sources: {
